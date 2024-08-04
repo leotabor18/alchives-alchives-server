@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.1.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.2.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.3.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.4.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.5.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.6.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.7.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.8.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.9.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.10.sql
