@@ -86,6 +86,34 @@ public class StorageUtil {
     return imagePath;
   }
 
+  public String uploadPersonnelImage(MultipartFile file) {
+    log.info("Uploading image to bucket {}", BUCKET_NAME);
+   String imagePath = "";
+
+    // try {
+    //   String fileName = file.getOriginalFilename();
+    //   String contentType = file.getContentType();
+
+    //   ObjectMetadata objectMetadata = new ObjectMetadata();
+    //   objectMetadata.setContentType(contentType);
+      
+    //   PutObjectRequest putObjectRequest =  new PutObjectRequest(
+    //     BUCKET_NAME + "/personnel", 
+    //     fileName, 
+    //     file.getInputStream(),
+    //     objectMetadata
+    //   ).withCannedAcl(CannedAccessControlList.PublicRead);
+    
+    //   space.putObject(putObjectRequest);
+    //   imagePath = getImagePathName(file);
+    //   log.info("Upload image success!");
+    // } catch(IOException exception) {
+    //   log.error("Failed to upload image to the storage", exception.getMessage());
+    // }
+
+    return imagePath;
+  }
+
   public String getImagePathName(MultipartFile file) {
     String fileName = file.getOriginalFilename();
     return System.getenv(STORAGE_PATH_URL) + "/" + ALUMNI_FOLDER + "/" + fileName;

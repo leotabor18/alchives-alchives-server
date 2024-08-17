@@ -31,17 +31,14 @@ public class Personnel extends Abstract implements IEntity {
   @Column(name = "suffix")
 	private String suffix;
 
-  @Column(name = "title")
-	private String title;
-
   @Column(name = "department")
 	private String department;
 
   @Column(name = "position")
 	private String position;
 
-  @Column(name = "role")
-	private String role;
+  // @Column(name = "role")
+	// private String role;
 
   @Column(name = "profile_pic")
 	private String profilePic;
