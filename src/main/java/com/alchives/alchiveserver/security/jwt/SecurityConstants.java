@@ -3,7 +3,7 @@ package com.alchives.alchiveserver.security.jwt;
 public class SecurityConstants {
 
   public static final String ACCESS_TOKEN                  = "accessToken";
-  public static final int ACCESS_TOKEN_EXPIRATION          = 25;   	// 25 minutes
+  public static final int ACCESS_TOKEN_EXPIRATION          = 60;   	// 25 minutes
   public static final String APPLICATION_JSON_CONTENT_TYPE = "application/json";
   public static final String HEADER_STRING                 = "Authorization";
   public static final String PUBLIC_URL                    = "/api/public/**";

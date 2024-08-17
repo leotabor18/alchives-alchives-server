@@ -2,6 +2,21 @@
         
 -- changeset Ric:1.0.0.8
 -- preconditions onFail:MARK_RAN onError:HALT
--- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM `user` WHERE email_address = 'admin@gmail.com';
-INSERT INTO `user` (`first_name`, `last_name`, `email_address`, `password`, `status`, `role_id`)
-VALUES ('admin', 'test', 'admin@gmail.com', '$2a$10$eKv1PjeuW96zZezHdFBAhO3OEhPV9hqFMsrufnxncviREVUAP1EKC', 'ACT', 1);
+-- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'alchives' AND TABLE_NAME = 'personnel'
+CREATE TABLE `personnel` (
+    `personnel_id` INT AUTO_INCREMENT NOT NULL,
+    `full_name`    VARCHAR(256) NOT NULL,
+    `prefix`       VARCHAR(256) DEFAULT NULL,
+    `suffix`       VARCHAR(256) DEFAULT NULL,
+    `title`        VARCHAR(256) NOT NULL,
+    `department`   VARCHAR(256) NOT NULL,
+    `position`     VARCHAR(256) NOT NULL,
+    `role`         VARCHAR(256) NOT NULL,
+    `profile_pic`  VARCHAR(256) DEFAULT NULL,
+    `who_added`    INT DEFAULT NULL,
+    `when_added`   DATETIME(0) DEFAULT CURRENT_TIMESTAMP,
+    `who_updated`  INT DEFAULT NULL,
+    `ts`           DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`personnel_id`),
+    CONSTRAINT `personnel_uq_01` UNIQUE (`full_name`)
+);

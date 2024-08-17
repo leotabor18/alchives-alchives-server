@@ -19,3 +19,13 @@ databaseChangeLog:
       file: classpath:/db/changelogs/db.changelog-1.0.0.9.sql
   - include:
       file: classpath:/db/changelogs/db.changelog-1.0.0.10.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.11.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.12.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.13.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.14.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.15.sql

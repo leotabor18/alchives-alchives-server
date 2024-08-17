@@ -10,14 +10,7 @@ CREATE TABLE `verification` (
     `type` VARCHAR(255) DEFAULT NULL,
     `expiration` INT NOT NULL,
     `status` CHAR(3) DEFAULT NULL,
-    `who_added` INT DEFAULT NULL,
-    `when_added` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `who_updated` INT DEFAULT NULL,
-    `ts` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`verification_id`),
     CHECK (`expiration` > 0),
-    CHECK (`user_id` > 0),
-    CHECK (`who_added` > 0), 
-    CHECK (`who_updated` > 0),
     CONSTRAINT `verification_fk_01` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
 );

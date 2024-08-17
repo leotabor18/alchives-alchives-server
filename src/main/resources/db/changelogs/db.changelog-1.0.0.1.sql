@@ -10,7 +10,6 @@ CREATE TABLE `user` (
     `email_address` NVARCHAR(256) DEFAULT NULL,
     `password`    VARCHAR(256) DEFAULT NULL,
     `status`      CHAR(3)      DEFAULT 'ACT',
-    `role_id`   INT           DEFAULT NULL,
     `who_added`   INT           DEFAULT NULL,
     `when_added`  DATETIME(0)   DEFAULT CURRENT_TIMESTAMP,
     `who_updated` INT           DEFAULT NULL,

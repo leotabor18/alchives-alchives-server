@@ -26,9 +26,6 @@ public class BatchPicture  extends Abstract implements IEntity {
 	@Column(name = "batch_year_id")
 	private Integer batchYearId;
 
-  @Column(name = "event_id")
-	private Integer eventId;
-
   @Column(name = "image")
 	private String image;
 

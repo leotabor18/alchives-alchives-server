@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,17 +20,11 @@ import lombok.Setter;
 @Inheritance
 @Entity
 @Table(name = "[event_personnel]")
-public class EventPersonnel {
+public class EventPersonnel extends Abstract implements IEntity {
   @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "event_personnel_id")
 	private Integer eventPersonnelId;
-
-  @Column(name = "event_id")
-	private Integer eventId;
-
-  @Column(name = "personnel_id")
-	private Integer personnelId;
 
   @Column(name = "type")
 	private String type;
@@ -40,6 +36,7 @@ public class EventPersonnel {
   @JoinColumn(name = "personnel_id")
 	private Personnel personnel;
 
+  @JsonIgnore
   @ManyToOne	
   @JoinColumn(name = "event_id")
 	private Event event;

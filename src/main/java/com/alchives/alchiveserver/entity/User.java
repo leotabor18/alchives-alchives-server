@@ -37,9 +37,6 @@ public class User extends Abstract implements IEntity {
 	@Column(name = "status")
 	private String status;
 
-	@Column(name = "role_id")
-	private Integer roleId;
-
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@Column(name = "password")
 	private String password;

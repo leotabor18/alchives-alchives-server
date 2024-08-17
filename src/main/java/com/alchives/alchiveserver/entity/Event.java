@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Inheritance
 @Entity
-public class Event {
+public class Event extends Abstract implements IEntity {
   @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "event_id")
