@@ -13,6 +13,7 @@ CREATE TABLE `alumni` (
     `batch_year`   VARCHAR(256) DEFAULT NULL,
     `quotes`   VARCHAR(256) DEFAULT NULL,
     `award`   VARCHAR(256) DEFAULT NULL,
+    `email`   VARCHAR(256) DEFAULT NULL,
     `status`      CHAR(3)      DEFAULT 'ACT',
     `program_id`   INT           DEFAULT NULL,
     `who_added`   INT           DEFAULT NULL,

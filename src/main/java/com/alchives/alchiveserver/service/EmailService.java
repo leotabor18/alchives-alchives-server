@@ -62,7 +62,7 @@ public class EmailService {
                                             ", you've requested for a password reset";
 
     String name                         = user.getFirstName()+" "+user.getLastName();
-    String createPasswordUrl            = baseUrl + "/portal/new-password/" + code;
+    String createPasswordUrl            = baseUrl + "/new-password/" + code;
 
     ctx.setVariable(USER_NAME, name);
     ctx.setVariable(USER_REDIRECTION, createPasswordUrl);
@@ -88,6 +88,54 @@ public class EmailService {
     }
 
     log.info("Sending Forgot Password Email - end");
+    return new ResponseEntity<>(status);
+  }
+
+  public ResponseEntity<Object> sendUserEmail(User user, Locale locale, String password) throws MessagingException, IOException {
+    log.info("Sending new user email - begin");
+    log.info("WEBSITE_URL: {}", baseUrl);
+
+    log.info("Locale Variable: {}", locale);
+
+    final Context           ctx           = new Context(locale);
+    final MimeMessage       mimeMessage   = this.mailSender.createMimeMessage();
+    final MimeMessageHelper msg           = new MimeMessageHelper(mimeMessage, "UTF-8");
+    String            emailSubject  = "Hi, " +
+                                            " "                                                        +
+                                            user.getFirstName()                                        +
+                                            " "                                                        +
+                                            user.getLastName()                                         +
+                                            ", you've requested for a password reset";
+
+    String name                         = user.getFirstName()+" "+user.getLastName();
+    String createPasswordUrl            = baseUrl + "/";
+
+    ctx.setVariable(USER_NAME, name);
+    ctx.setVariable(USER_REDIRECTION, createPasswordUrl);
+    ctx.setVariable("email", user.getEmail());
+    ctx.setVariable("password", password);
+
+    msg.setSubject(emailSubject);
+    msg.setFrom(serverName + " <" + serverFrom + ">");
+    msg.setTo(user.getEmail());
+
+    log.info("Set HTML Content");
+    final String htmlContent = this.htmlTemplateEngine.process("new-user-template", ctx);
+    msg.setText(htmlContent, true);
+
+    // Send email
+    HttpStatus status = null;
+    try {
+      log.info("Sending Email to User with userId {}...", user.getUserId());
+      this.mailSender.send(mimeMessage);
+      status = HttpStatus.OK;
+      log.info("Email sent successfully!");
+    } catch (Exception ex) {
+      log.info("Failed to send email: " + ex.getMessage());
+      status = HttpStatus.INTERNAL_SERVER_ERROR;
+    }
+
+    log.info("Sending new user Email - end");
     return new ResponseEntity<>(status);
   }
 }

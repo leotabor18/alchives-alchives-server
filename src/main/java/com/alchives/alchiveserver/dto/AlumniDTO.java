@@ -18,6 +18,8 @@ public class AlumniDTO {
 
 	private String suffix;
 
+	private String email;
+
 	// private MultipartFile image;
 
 	private String batchYear;

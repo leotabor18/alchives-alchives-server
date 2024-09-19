@@ -41,6 +41,9 @@ public class Alumni extends Abstract implements IEntity {
   @Column(name = "image")
 	private String image;
 
+	@Column(name = "email")
+	private String email;
+
   @Column(name = "batch_year")
 	private String batchYear;
 

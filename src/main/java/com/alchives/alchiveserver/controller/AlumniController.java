@@ -1,5 +1,8 @@
 package com.alchives.alchiveserver.controller;
 
+import java.io.IOException;
+
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +30,12 @@ public class AlumniController {
 
 
   @PostMapping(value = "/create", consumes = {"multipart/form-data"})
-  public ResponseEntity<Object> createAlumni(@ModelAttribute AlumniDTO request, @RequestParam(name="image", required=false) MultipartFile image) {
+  public ResponseEntity<Object> createAlumni(@ModelAttribute AlumniDTO request, @RequestParam(name="image", required=false) MultipartFile image) throws MessagingException, IOException {
     return alumniService.createAlumni(request, image);
   }
 
   @PatchMapping(value = "/{id}", consumes = {"multipart/form-data"})
-  public ResponseEntity<Object> updateAlumni(@PathVariable("id") Integer id, @ModelAttribute AlumniDTO request, @RequestParam(name="image", required=false) MultipartFile image) {
+  public ResponseEntity<Object> updateAlumni(@PathVariable("id") Integer id, @ModelAttribute AlumniDTO request, @RequestParam(name="image", required=false) MultipartFile image) throws MessagingException, IOException {
     return alumniService.updateAlumni(id, request, image);
   }
 

@@ -57,9 +57,11 @@ public class MailConfig implements ApplicationContextAware, EnvironmentAware {
     mailSender.setProtocol(this.env.getProperty(PROTOCOL));
     mailSender.setUsername(this.env.getProperty(USERNAME));
     mailSender.setPassword(this.env.getProperty(PASSWORD));
+  
 
     // JavaMail-specific mail sender configuration, based on javamail.properties
     final Properties javaMailProperties = new Properties();
+    javaMailProperties.setProperty("mail.smtp.ssl.enable", "true");
     javaMailProperties.load(this.applicationContext.getResource(JAVA_MAIL_FILE).getInputStream());
     mailSender.setJavaMailProperties(javaMailProperties);
 

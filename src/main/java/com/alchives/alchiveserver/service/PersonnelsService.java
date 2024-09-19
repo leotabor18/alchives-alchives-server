@@ -36,9 +36,35 @@ public class PersonnelsService {
 
     if (image != null) {
       StorageUtil storageUtil = new StorageUtil();
-      String path = storageUtil.uploadPersonnelImage(image);
-      
+      String path = storageUtil.uploadImage(image);
       personnel.setProfilePic(path);
+    }
+
+    personnelRepo.save(personnel);
+
+    return new ResponseEntity<>(personnel, HttpStatus.OK);
+  }
+
+  public ResponseEntity<Object> updatePersonnel(Integer id, PersonnelDTO personnelDTO, MultipartFile image) {
+    Optional<Personnel> optionalPersonnel = personnelRepo.findById(id);
+    if (!optionalPersonnel.isPresent()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    Personnel personnel = optionalPersonnel.get();
+    personnel.setDepartment(personnelDTO.getDepartment());
+    personnel.setFullName(personnelDTO.getFullName());
+    personnel.setPosition(personnelDTO.getPosition());
+    personnel.setPrefix(personnelDTO.getPrefix());
+    personnel.setSuffix(personnelDTO.getSuffix());
+
+    if (image != null) {
+      StorageUtil storageUtil = new StorageUtil();
+      String fileName = storageUtil.getImagePathName(image);
+      if (!fileName.equals(personnel.getProfilePic())) {
+        String path = storageUtil.uploadImage(image);
+        personnel.setProfilePic(path);
+      }
     }
 
     personnelRepo.save(personnel);
