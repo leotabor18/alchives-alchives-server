@@ -37,9 +37,6 @@ public class Personnel extends Abstract implements IEntity {
   @Column(name = "position")
 	private String position;
 
-  // @Column(name = "role")
-	// private String role;
-
   @Column(name = "profile_pic")
 	private String profilePic;
 }

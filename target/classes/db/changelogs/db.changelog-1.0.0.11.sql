@@ -8,7 +8,7 @@ CREATE TABLE `content` (
     `type`         INT           NOT NULL,
     `title`        VARCHAR(256)  NOT NULL,
     `description`  TEXT          NOT NULL,
-    `image_url`    VARCHAR(256)  NOT NULL,
+    -- `image_url`    VARCHAR(256)  NOT NULL,
     `who_added`    INT           DEFAULT NULL,
     `when_added`   DATETIME(0)   DEFAULT CURRENT_TIMESTAMP,
     `who_updated`  INT           DEFAULT NULL,

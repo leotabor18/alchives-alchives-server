@@ -9,6 +9,10 @@ CREATE TABLE `event_personnel` (
     `personnel_id`       INT NOT NULL,
     `type`              VARCHAR(256) NOT NULL,
     `message`           VARCHAR(256) NOT NULL,
+    `who_added`    INT DEFAULT NULL,
+    `when_added`   DATETIME(0) DEFAULT CURRENT_TIMESTAMP,
+    `who_updated`  INT DEFAULT NULL,
+    `ts`           DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`event_personnel_id`),
     CONSTRAINT `event_personnel_fk_01` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`),
     CONSTRAINT `event_personnel_fk_02` FOREIGN KEY (`personnel_id`) REFERENCES `personnel` (`personnel_id`)
