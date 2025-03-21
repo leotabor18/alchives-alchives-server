@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alchives.alchiveserver.dto.AlumnisDTO;
 import com.alchives.alchiveserver.entity.Alumni;
 import com.alchives.alchiveserver.service.AlumniService;
 
@@ -22,7 +23,7 @@ public class PublicAlumniController {
   @GetMapping
   public ResponseEntity<Object> getAlumni(@RequestParam("batchYear") String batchYear, 
     @RequestParam("programId") Integer programId) {
-    List<Alumni> response = alumniService.getAlumni(batchYear, programId);
+    List<AlumnisDTO> response = alumniService.getAlumni(batchYear, programId);
     if (response != null) {
       return new ResponseEntity<>(response, HttpStatus.OK);
     }

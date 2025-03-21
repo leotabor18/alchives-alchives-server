@@ -1,6 +1,6 @@
 package com.alchives.alchiveserver.dto;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,5 +30,6 @@ public class AlumniDTO {
 
 	private String status;
 
-	private Integer programId; 
+	private Integer programId;
+	// private List<AchievementDTO> achievements;
 }

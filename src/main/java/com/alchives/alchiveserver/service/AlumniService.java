@@ -2,6 +2,7 @@ package com.alchives.alchiveserver.service;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -18,10 +19,14 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.alchives.alchiveserver.dto.AchievementDTO;
 import com.alchives.alchiveserver.dto.AlumniDTO;
+import com.alchives.alchiveserver.dto.AlumnisDTO;
+import com.alchives.alchiveserver.entity.Achievement;
 import com.alchives.alchiveserver.entity.Alumni;
 import com.alchives.alchiveserver.entity.Program;
 import com.alchives.alchiveserver.entity.User;
+import com.alchives.alchiveserver.repository.AchievementRepo;
 import com.alchives.alchiveserver.repository.AlumniRepo;
 import com.alchives.alchiveserver.repository.ProgramRepo;
 import com.alchives.alchiveserver.repository.UserRepo;
@@ -45,6 +50,9 @@ public class AlumniService {
   UserRepo userRepo;
   
   @Autowired
+  AchievementRepo achievementsRepo;
+  
+  @Autowired
   ProgramRepo programRepo;
 
   @Autowired
@@ -52,8 +60,33 @@ public class AlumniService {
 
   private static final SecureRandom RANDOM = new SecureRandom();
 
-  public List<Alumni> getAlumni(String batchYear, Integer programid) {
-    return alumniRepo.findByBatchYearAndProgramProgramId(batchYear, programid);
+  public List<AlumnisDTO> getAlumni(String batchYear, Integer programid) {
+    List<Alumni> alumnis =  alumniRepo.findByBatchYearAndProgramProgramId(batchYear, programid);
+
+    List<AlumnisDTO> alumnisDTOs = new ArrayList<>();
+    for (Alumni alumni: alumnis) {
+      AlumnisDTO alumnisDTO = new AlumnisDTO();
+      alumnisDTO.setAchievements(null);
+      alumnisDTO.setAward(alumni.getAward());
+      alumnisDTO.setFirstName(alumni.getFirstName());
+      alumnisDTO.setLastName(alumni.getLastName());
+      alumnisDTO.setBatchYear(alumni.getBatchYear());
+      alumnisDTO.setQuotes(alumni.getQuotes());
+      alumnisDTO.setEmail(alumni.getEmail());
+      alumnisDTO.setAlumniId(alumni.getAlumniId());
+      alumnisDTO.setStudentNumber(alumni.getStudentNumber());
+      alumnisDTO.setSuffix(alumni.getSuffix());
+      alumnisDTO.setImage(alumni.getImage());
+      alumnisDTO.setStatus(alumni.getStatus());
+      alumnisDTO.setProgramId(alumni.getProgram().getProgramId());
+      
+      
+      List<Achievement>  achievements = achievementsRepo.findByAlumniId(alumni.getAlumniId());
+      
+      alumnisDTO.setAchievements(achievements);
+      alumnisDTOs.add(alumnisDTO);
+    }
+    return alumnisDTOs;
   }
 
   public Alumni getAlumniById(Integer alumniId) {
@@ -66,7 +99,7 @@ public class AlumniService {
     return alumni;
   }
 
-  public ResponseEntity<Object> createAlumni(AlumniDTO alumniDTO, MultipartFile image) throws MessagingException, IOException {
+  public ResponseEntity<Object> createAlumni(AlumniDTO alumniDTO, MultipartFile image, List<AchievementDTO> achievemens) throws MessagingException, IOException {
     Optional<Alumni> optionalAlumni = alumniRepo.findByStudentNumber(alumniDTO.getStudentNumber());
     if (optionalAlumni.isPresent()) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
@@ -89,7 +122,6 @@ public class AlumniService {
     alumni.setBatchYear(alumniDTO.getBatchYear());
     alumni.setQuotes(alumniDTO.getQuotes());
     alumni.setEmail(alumniDTO.getEmail());
-
     if (image != null) {
       StorageUtil storageUtil = new StorageUtil();
       String path = storageUtil.uploadImage(image);
@@ -97,7 +129,17 @@ public class AlumniService {
       alumni.setImage(path);
     }
 
-    alumniRepo.save(alumni);
+    Alumni newAlumni = alumniRepo.save(alumni);
+
+          
+    for (AchievementDTO achievement: achievemens) {
+      Achievement achievements = new Achievement();
+      achievements.setDate(achievement.getDate());
+      achievements.setText(achievement.getText());
+      achievements.setAchievementsId(newAlumni.getAlumniId());
+
+      achievementsRepo.save(achievements);
+    }
 
     if (alumniDTO.getEmail() != "" || alumniDTO.getEmail() != null) {
       User user = new User();
@@ -112,7 +154,8 @@ public class AlumniService {
       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
       user.setPassword(passwordEncoder.encode(password));
-      userRepo.save(user);
+
+      User newUser = userRepo.save(user);
 
       Locale locale = Locale.getDefault();
       emailService.sendUserEmail(user, locale, password);
@@ -121,7 +164,7 @@ public class AlumniService {
     return new ResponseEntity<>(alumni, HttpStatus.OK);
   }
 
-  public ResponseEntity<Object> updateAlumni(Integer id, AlumniDTO alumniDTO, MultipartFile image) throws MessagingException, IOException {
+  public ResponseEntity<Object> updateAlumni(Integer id, AlumniDTO alumniDTO, MultipartFile image, List<AchievementDTO> achievemens) throws MessagingException, IOException {
     Optional<Alumni> optionalAlumni = alumniRepo.findById(id);
     if (!optionalAlumni.isPresent()) {
       throw new BadRequestException("Alumni is not exist");
@@ -154,6 +197,19 @@ public class AlumniService {
 
     alumniRepo.save(alumni);
     Boolean userOptional = userRepo.existsByEmail(alumniDTO.getEmail()); 
+    List<Achievement>  achievements = achievementsRepo.findByAlumniId(alumni.getAlumniId());
+    for (Achievement achievement: achievements) {
+     achievementsRepo.delete(achievement);
+    }
+
+    for (AchievementDTO achievement: achievemens) {
+      Achievement newAchievements = new Achievement();
+      newAchievements.setDate(achievement.getDate());
+      newAchievements.setText(achievement.getText());
+      newAchievements.setAlumniId(alumni.getAlumniId());
+
+      achievementsRepo.save(newAchievements);
+    }
 
     if ((alumniDTO.getEmail() != "" || alumniDTO.getEmail() != null)) {
       User user = new User();
@@ -179,7 +235,6 @@ public class AlumniService {
         Locale locale = Locale.getDefault();
         emailService.sendUserEmail(user, locale, password);
       }
-      
 
       userRepo.save(user);
     }

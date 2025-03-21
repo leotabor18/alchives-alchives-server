@@ -40,25 +40,34 @@ public class AuthService {
   private EmailService emailService;
 
   @Autowired
+  private AlumniService alumniService;
+
+  @Autowired
   private VerificationRepo verificationRepo;
 
-  public User registerUser(SignUpRequest request) {
+  public User registerUser(SignUpRequest request) throws MessagingException, IOException {
     if (Boolean.TRUE.equals(userRepo.existsByEmail(request.getEmail()))) {
       log.error("Registration failed: Username {} is already exist", request.getEmail());
-      return null;
+      throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
-    if (!request.getPassword().equals(request.getConfirmPassword())) {
-        log.error("Registration failed: Passwords do not match");
-        return null;
-    }
-
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     User user = new User();
     user.setEmail(request.getEmail());
-    user.setPassword(passwordEncoder.encode(request.getPassword()));
     user.setFirstName(request.getFirstName());
     user.setLastName(request.getLastName());
+
+    user.setRole(request.getRole());
+
+    String password = AlumniService.generateSecurePassword(10);
+    System.out.println("Generated Password: " + password);
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    user.setPassword(passwordEncoder.encode(password));
+    userRepo.save(user);
+
+    Locale locale = Locale.getDefault();
+    emailService.sendUserEmail(user, locale, password);
     
     return userRepo.save(user);
   }

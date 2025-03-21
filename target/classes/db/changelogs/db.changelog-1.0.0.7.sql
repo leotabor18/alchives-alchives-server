@@ -7,6 +7,10 @@ CREATE TABLE `event_program` (
     `event_program_id` INT AUTO_INCREMENT NOT NULL,
     `event_id`         INT NOT NULL,
     `program_id`       INT NOT NULL,
+    `who_added`    INT DEFAULT NULL,
+    `when_added`   DATETIME(0) DEFAULT CURRENT_TIMESTAMP,
+    `who_updated`  INT DEFAULT NULL,
+    `ts`           DATETIME(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`event_program_id`),
     CONSTRAINT `event_program_fk_01` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`),
     CONSTRAINT `event_program_fk_02` FOREIGN KEY (`program_id`) REFERENCES `program` (`program_id`)

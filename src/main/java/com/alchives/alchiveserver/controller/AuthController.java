@@ -38,7 +38,7 @@ public class AuthController {
   VerificationService verificationService;
   
   @PostMapping("/signup")
-  public ResponseEntity<Object> signUp(@RequestBody SignUpRequest request) {
+  public ResponseEntity<Object> signUp(@RequestBody SignUpRequest request) throws MessagingException, IOException {
     User response = authService.registerUser(request);
     if (response != null) {
       return new ResponseEntity<>(response, HttpStatus.OK);
