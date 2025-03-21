@@ -131,12 +131,12 @@ public class AlumniService {
 
     Alumni newAlumni = alumniRepo.save(alumni);
 
-          
+          log.info("ALUMNI_ID {}", newAlumni.getAlumniId());
     for (AchievementDTO achievement: achievemens) {
       Achievement achievements = new Achievement();
       achievements.setDate(achievement.getDate());
       achievements.setText(achievement.getText());
-      achievements.setAchievementsId(newAlumni.getAlumniId());
+      achievements.setAlumniId(newAlumni.getAlumniId());
 
       achievementsRepo.save(achievements);
     }
