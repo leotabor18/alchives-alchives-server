@@ -31,6 +31,12 @@ public class Institute extends Abstract implements IEntity{
 	@Column(name = "description")
 	private String description;
 
+	@Column(name = "color")
+	private String color;
+	
+	@Column(name = "image")
+	private String image;
+
   @OneToMany(mappedBy = "institute")
 	private List<Program> programs;
 }

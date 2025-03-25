@@ -35,3 +35,5 @@ databaseChangeLog:
       file: classpath:/db/changelogs/db.changelog-1.0.0.17.sql
   - include:
       file: classpath:/db/changelogs/db.changelog-1.0.0.18.sql
+  - include:
+      file: classpath:/db/changelogs/db.changelog-1.0.0.19.sql
