@@ -13,6 +13,8 @@ public interface ProgramRepo extends JpaRepository<Program, Integer> {
 
   Page<Program> findByNameContaining(String programName, Pageable page);
 
+  Page<Program> findByInstituteInstituteId(Integer instituteId, Pageable page);
+
   Optional<Program> findByName(String name);
 
 }
